@@ -1,0 +1,8 @@
+- [X] Complete ToCGI (high)
+- [X] Allow multiple valued parameters (high)
+- DTD to Form script (high)
+- Better error checking of CGI params (med)
+- [o] Better documentation (low)
+
+[X] marks done (woohoo!)
+[o] marks started

@@ -1,0 +1,204 @@
+*** WARNING *** WARNING *** WARNING *** WARNING ***
+
+This module requires XML::Parser version 2.20, but that's not been released
+yet. To get around this you need to make 2 patches to XML::Parser (1 of them
+is non-essential). First, the non-essential bug fix:
+
+In XML::Parser, the Stream style has a function doText which looks like:
+
+sub doText {
+	...
+	
+	if ($_) {
+		...
+	}
+}
+
+change that to:
+
+sub doText {
+	...
+	
+	if (defined $_) {
+		...
+	}
+}
+
+And the other, required fix is to add the following function to Expat.pm:
+
+sub finish {
+	my ($self) = @_;
+	
+	foreach (keys %{$self->{_Setters}}) {
+		&{$self->{_Setters}->{$_}}($self->{Parser}, undef);
+	}
+}
+
+The first patch fixes a bug where you have <tag>0</tag> and the finish function
+allows you to break out of a parse phase.
+
+END OF WARNING.
+
+NAME
+    CGI::XMLForm - Extension of CGI.pm which reads/generates formated XML.
+
+    NB: This is a subclass of CGI.pm, so can be used in it's place.
+
+SYNOPSIS
+      use CGI::XMLForm;
+      
+      my $cgi = new CGI::XMLForm;
+      
+      print $cgi->header, $cgi->pre($cgi->escapeHTML($cgi->ToXML));
+
+DESCRIPTION
+    This module takes form fields given in a specialised format, and outputs
+    them to XML based on that format. The idea is that you can create forms
+    that define the resulting XML at the back end.
+
+    The format for the form elements is:
+
+      <input name="/body/p/ul/li">
+
+    which creates the following XML:
+
+      <body>
+        <p>
+              <ul>
+                <li>Entered Value</li>
+              </ul>
+            </p>
+      </body>
+
+    It's the user's responsibility to design appropriate forms to make use
+    of this module, although coming later will be a small module that uses
+    my XML::DTDParser to create all the form elements given a DTD.
+
+    Also supported are attribute form items, that allow creation of element
+    attributes. The syntax for this is:
+
+      <input name="/body/p[@id="mypara" and @onClick="someFunc()"]/@class">
+      
+    Which creates the following XML:
+
+      <body>
+        <p id="mypara" onClick="someFunc()" class="Entered Value"></p>
+      </body>
+
+    Also possible are relative paths. So the following form elements:
+
+      <input type="hidden" name="/table/tr">
+      <input type="text" name="td">
+      <input type="text" name="td">
+      <input type="text" name="../tr/td">
+
+    Will create the following XML:
+
+      <table>
+        <tr>
+              <td>value1</td>
+              <td>value2</td>
+            </tr>
+            <tr>
+              <td>value3</td>
+            </tr>
+      </table>
+
+SYNTAX
+    The following is a brief syntax guideline
+
+    Full paths start with a "/" :
+
+      "/table/tr/td"
+
+    Relative paths start with either ".." or just a tag name.
+
+      "../tr/td"
+      "td"
+
+    Relative paths go at the level above the previous path, unless the
+    previous path was also a relative path, in which case it goes at the
+    same level. This seems confusing at first (you might expect it to always
+    go at the level above the previous element), but it makes your form
+    easier to design. Take the following example: You have a timesheet (see
+    the example supplied in the archive) that has monday,tuesday,etc. Our
+    form can look like this:
+
+      <input type="text" name="/timesheet/projects/project/@Name">
+      <input type="text" name="monday">
+      <input type="text" name="tuesday">
+      ...
+
+    Rather than:
+
+      <input type="text" name="/timesheet/projects/project/@Name">
+      <input type="text" name="monday">
+      <input type="text" name="../tuesday">
+      <input type="text" name="../wednesday">
+      ...
+
+    If unsure I recommend using full paths, relative paths are great for
+    repeating groups of data, but weak for heavily structured data. Picture
+    the following paths:
+
+      /timesheet/employee/name/forename
+      ../surname
+      title
+      ../department
+
+    This actually creates the following XML:
+
+      <timesheet>
+        <employee>
+              <name>
+                <forename>val1</forname>
+                    <surname>val2</surname>
+                    <title>val3></title>
+              </name>
+              <department>val4</department>
+            </employee>
+      </timesheet>
+
+    Confusing eh? Far better to say:
+
+      /timesheet/employee/name/forename
+      /timesheet/employee/name/surname
+      /timesheet/employee/name/title
+      /timesheet/employee/department
+
+    Or alternatively, better still:
+
+      /timesheet/employee/name (Make hidden and no value)
+      forename
+      surname
+      title
+      ../department
+
+    Attributes go in square brackets. Attribute names are preceded with an
+    "@", and attribute values follow an "=" sign and are enclosed in quotes.
+    Multiple attributes are separated with " and ".
+
+      /table[@bgcolor="blue" and @width="100%"]/tr/td
+
+    If setting an attribute, it follows after the tag that it is associated
+    with, after a "/" and it's name is preceded with an "@".
+
+      /table/@bgcolor
+
+  Caveats
+
+    There are a few caveats to using this module:
+
+AUTHOR
+        Matt Sergeant msergeant@ndirect.co.uk, sergeant@geocities.com
+
+        Based on an original concept, and discussions with, Jonathan
+        Eisenzopf. Thanks to the Perl-XML mailing list for suggesting the
+        XSL syntax.
+
+        Special thanks to Francois Belanger (francois@sitepak.com) for his
+        mentoring and help with the syntax design.
+
+SEE ALSO
+        CGI(1), CGI::XML
+
