@@ -16,7 +16,7 @@
 
 # --- MakeMaker const_config section:
 
-# These definitions are from config.sh (via /usr/lib/perl5/i386-linux/5.00404/Config.pm)
+# These definitions are from config.sh (via /usr/lib/perl5/i386-linux/5.00405/Config.pm)
 
 # They may have been overridden via Makefile.PL or on the command line
 AR = ar
@@ -52,20 +52,20 @@ INST_SCRIPT = .././blib/script
 PREFIX = /usr
 INSTALLDIRS = site
 INSTALLPRIVLIB = $(PREFIX)/lib/perl5
-INSTALLARCHLIB = $(PREFIX)/lib/perl5/i386-linux/5.00404
+INSTALLARCHLIB = $(PREFIX)/lib/perl5/i386-linux/5.00405
 INSTALLSITELIB = $(PREFIX)/lib/perl5/site_perl
 INSTALLSITEARCH = $(PREFIX)/lib/perl5/site_perl/i386-linux
 INSTALLBIN = $(PREFIX)/bin
 INSTALLSCRIPT = $(PREFIX)/bin
 PERL_LIB = /usr/lib/perl5
-PERL_ARCHLIB = /usr/lib/perl5/i386-linux/5.00404
+PERL_ARCHLIB = /usr/lib/perl5/i386-linux/5.00405
 SITELIBEXP = /usr/lib/perl5/site_perl
 SITEARCHEXP = /usr/lib/perl5/site_perl/i386-linux
 LIBPERL_A = libperl.a
 FIRST_MAKEFILE = Makefile
 MAKE_APERL_FILE = Makefile.aperl
 PERLMAINCC = $(CC)
-PERL_INC = /usr/lib/perl5/i386-linux/5.00404/CORE
+PERL_INC = /usr/lib/perl5/i386-linux/5.00405/CORE
 PERL = /usr/bin/perl
 FULLPERL = /usr/bin/perl
 
@@ -237,21 +237,21 @@ config :: $(INST_ARCHAUTODIR)/.exists
 config :: $(INST_AUTODIR)/.exists
 	@$(NOOP)
 
-$(INST_AUTODIR)/.exists :: /usr/lib/perl5/i386-linux/5.00404/CORE/perl.h
+$(INST_AUTODIR)/.exists :: /usr/lib/perl5/i386-linux/5.00405/CORE/perl.h
 	@$(MKPATH) $(INST_AUTODIR)
-	@$(EQUALIZE_TIMESTAMP) /usr/lib/perl5/i386-linux/5.00404/CORE/perl.h $(INST_AUTODIR)/.exists
+	@$(EQUALIZE_TIMESTAMP) /usr/lib/perl5/i386-linux/5.00405/CORE/perl.h $(INST_AUTODIR)/.exists
 
 	-@$(CHMOD) 755 $(INST_AUTODIR)
 
-$(INST_LIBDIR)/.exists :: /usr/lib/perl5/i386-linux/5.00404/CORE/perl.h
+$(INST_LIBDIR)/.exists :: /usr/lib/perl5/i386-linux/5.00405/CORE/perl.h
 	@$(MKPATH) $(INST_LIBDIR)
-	@$(EQUALIZE_TIMESTAMP) /usr/lib/perl5/i386-linux/5.00404/CORE/perl.h $(INST_LIBDIR)/.exists
+	@$(EQUALIZE_TIMESTAMP) /usr/lib/perl5/i386-linux/5.00405/CORE/perl.h $(INST_LIBDIR)/.exists
 
 	-@$(CHMOD) 755 $(INST_LIBDIR)
 
-$(INST_ARCHAUTODIR)/.exists :: /usr/lib/perl5/i386-linux/5.00404/CORE/perl.h
+$(INST_ARCHAUTODIR)/.exists :: /usr/lib/perl5/i386-linux/5.00405/CORE/perl.h
 	@$(MKPATH) $(INST_ARCHAUTODIR)
-	@$(EQUALIZE_TIMESTAMP) /usr/lib/perl5/i386-linux/5.00404/CORE/perl.h $(INST_ARCHAUTODIR)/.exists
+	@$(EQUALIZE_TIMESTAMP) /usr/lib/perl5/i386-linux/5.00405/CORE/perl.h $(INST_ARCHAUTODIR)/.exists
 
 	-@$(CHMOD) 755 $(INST_ARCHAUTODIR)
 

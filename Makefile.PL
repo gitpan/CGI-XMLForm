@@ -4,6 +4,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     'NAME'	=> 'CGI::XMLForm',
 	'DIR'	=> [qw(Path)],
+	'PREREQ_PM' => {'XML::Parser' => '2.20' },
     'VERSION_FROM' => 'XMLForm.pm', # finds $VERSION
 	'dist'	=> {COMPRESS => 'gzip', 'SUFFIX' => 'gz'},
 );

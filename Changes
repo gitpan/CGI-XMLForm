@@ -1,16 +1,20 @@
 Revision history for Perl extension CGI::ToXML.
 
+0.09  Mon Jun 7 1999
+	- Bug fix for when typing a / in the form field
+
+0.08  Internal bug fix release
+
 0.07  Wed Jan 27 1999
 	- Speed improvements. Now faster than XML::XQL (DOM) for all cases
 	- Some minor bug fixes
-	- Fixes to Stream mode - see README - needs to patch XML::Parser version
-	2.19
+	- Fixes to Stream mode
 
 0.06  Fri Jan 22 1999
 	- "Pretty" XML fixed.
 	- Removed ToCGI - that was a dumb name!
 	- Fixed - the module was actually totally broken, except
-    in a mod-perl environment where we'd already included
+    	in a mod-perl environment where we'd already included
 		XML::Parser at the server level.
 
 0.05  Thu Jan 21 1999
@@ -27,7 +31,7 @@ Revision history for Perl extension CGI::ToXML.
 	- Don't overload parse_params any more - that could be problematic.
 	- Don't allow people to enter entities in forms any more (always
 	  encodes & as &amp; from now on, even if followed by \w+;).
-	- Thought very hard about rewriting to be neater, 
+	- Thought very hard about rewriting to be neater,
 		but didn't bother in the end ;-) Next version maybe!
 
 0.03  Wed Jan 06 1999

@@ -11,7 +11,7 @@ require AutoLoader;
 # names by default without a very good reason. Use EXPORT_OK instead.
 # Do not simply export all your public functions/methods/constants.
 @EXPORT = qw(
-	
+
 );
 
 $VERSION = '0.01';
@@ -40,20 +40,20 @@ sub buildSelf {
 	if ($self->{_path} =~ s/\*$//) {
 		$self->{_repeat} = 1;
 	}
-	
+
 #	warn "Building from ", $self->{_path}, "\n";
-	
-	
+
+
 	my @parts = split('/', $self->{_path});
 	my @fullpath;
 	$self->{Relative} = 0;
-	
+
 	if ($self->{_path} !~ /^\//) {
 		# It's a relative path
 
 		$self->{_relative} = 1;
 		@fullpath = @{$prev->{_fullpath}};
-		
+
 		if ($prev->isRelative) {
 			# prev was a relative path so remove top item
 			pop @fullpath;
@@ -72,13 +72,13 @@ sub buildSelf {
 		shift @parts;
 		@fullpath = @parts;
 	}
-	
+
 	if ($fullpath[$#fullpath] =~ /^\@(\w+)$/) {
 		pop @fullpath;
 		pop @parts;
 		$self->{_attrib} = $1;
 	}
-	
+
 	$self->{Parts} = \@parts;
 	$self->{_fullpath} = \@fullpath;
 
@@ -102,11 +102,11 @@ sub isRepeat {
 sub isChildPath {
 	my $self = shift;
 	my $compare = shift;
-	
+
 	# Now compare each level of the tree, and throw away attributes.
 	my @a = @{$self->{_fullpath}};
 	my @b = @{$compare->{_fullpath}};
-	
+
 	if (@a >= @b) {
 		return 0;
 	}
@@ -125,10 +125,10 @@ sub Attrib {
 sub isEqual {
 	my $self = shift;
 	my $compare = shift;
-	
+
 	my @a = @{$self->{_fullpath}};
 	my @b = @{$compare->{_fullpath}};
-	
+
 #	warn "Comparing: ", $self->FullPath, "\nTo      : ", $compare->FullPath,
 #	"\n";
 	if (scalar @a != scalar @b) {
@@ -151,7 +151,7 @@ sub Append {
 	my %attribs = @_;
 	if (%attribs) {
 		$element .= "[";
-		
+
 		$element .= join " and ",
 					(map "\@$_=\"$attribs{$_}\"", (keys %attribs));
 		$element .= "]";

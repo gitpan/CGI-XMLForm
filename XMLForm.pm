@@ -12,14 +12,14 @@ use XML::Parser;
 # names by default without a very good reason. Use EXPORT_OK instead.
 # Do not simply export all your public functions/methods/constants.
 @EXPORT = qw(
-	
+
 );
-$VERSION = '0.07';
+$VERSION = '0.09';
 
 sub new {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
-	my $self  = $class->SUPER::new();
+	my $self  = $class->SUPER::new(@_);
 	bless ($self, $class);          # reconsecrate
 	return $self;
 }
@@ -27,11 +27,11 @@ sub new {
 sub readXML {
 	my $self = shift;
 	my $xml = shift;
-	
+
 	my @queries = @_;
-	
+
 	my @Requests;
-	
+
 	my $req = new CGI::XMLForm::Path();
 	do {
 		$req = new CGI::XMLForm::Path(shift @queries, $req);
@@ -39,13 +39,13 @@ sub readXML {
 	} while @queries;
 
 	my $currenttree = new CGI::XMLForm::Path();
-	
+
 	my $p = new XML::Parser(Style => 'Stream',
 		_parseresults => [],
 		_currenttree => $currenttree,
 		_requests => \@Requests,
 		);
-		
+
 	my $results;
 	eval {
 		$results = $p->parse($xml);
@@ -128,7 +128,7 @@ sub found {
 		# Request path contains a regexp
 		my $match = $request->Path;
 		$match =~ s/\[(.*?)\]/\\\[$1\\\]/g;
-	
+
 #		warn "Regexp: ", $expat->{_currenttree}->Path, " =~ |$match|\n";
 		$expat->{_currenttree}->Path =~ /$match/;
 		push @{$expat->{_parseresults}}, $&, $found;
@@ -149,11 +149,13 @@ sub EndDocument {
 
 sub formatElement($$) {
 	# Properly formats elements whether opening or closing.
-	
+
 	my $cgi = shift;
 	my $open = shift;
 	my $element = shift;
 	my $level = shift;
+
+	$element =~ s/&slash;/\//g;
 
 	$element =~ /^(.*?)(\[(.*)\])?$/;
 	my $output = $1;
@@ -168,10 +170,10 @@ sub formatElement($$) {
 			return ("\t" x --$cgi->{'.closetags'}) . "</$output>\n";
 		}
 	}
-	
+
 	# If we have attributes
-	while ($attribs =~ /\@(\w+?)=\"(.*?)\"(\s+and\s+)?/g) {
-		$output .= " $1=\"$2\"";
+	while ($attribs =~ /\@(\w+?)=([\"\'])(.*?)\2(\s+and\s+)?/g) {
+		$output .= " $1=\"$3\"";
 	}
 	my $save = $cgi->{'.closetags'};
 	$cgi->{'.closetags'} = 0;
@@ -187,6 +189,7 @@ sub toXML {
 	my $filename = shift;
 
 	if (defined $filename) {
+		local *OUTPUT;
 		open(OUTPUT, ">$filename") or die "Can't open $filename for output: $!";
 		print OUTPUT $self->{".xml"};
 		close OUTPUT;
@@ -200,9 +203,10 @@ sub parse_params {
     my(@pairs) = split('&',$tosplit);
     my($param,$value);
 	my $output = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>";
-	
+
 	my @prevStack;
 	my @stack;
+	my @rawParams;
 	my $relative;
 	$self->{'.closetags'} = 0;
 
@@ -217,12 +221,17 @@ sub parse_params {
 		next if $param =~ /^xmlcgi:ignore/;
 		next if $param =~ /^\.\w/; # Skip CGI.pm ".submit" and other buttons
 
+		push @rawParams, $param, $value;
+
 		# Encode values
 		$value =~ s/&/&amp;/g;
 		$value =~ s/</&lt;/g;
 		$value =~ s/>/&gt;/g;
 		$value =~ s/'/&apos;/g;
 		$value =~ s/"/&quot;/g;
+
+		$value =~ s/\//\&slash;/g; # We decode this later...
+		$param =~ s/\[(.*?)\/(.*?)\]/\[$1\&slash;$2\]/g;
 
 		# Here we make the attribute into an internal attrib
 		# so that tree compares work properly
@@ -242,8 +251,8 @@ sub parse_params {
 
 			# - We don't need to do this, but it's here commented out
 			# to show what we're implying.
-			# @stack = @prevStack; 
-			
+			# @stack = @prevStack;
+
 
 			# We don't want the last element if the previous param
 			# was also a relative param.
@@ -301,7 +310,7 @@ sub parse_params {
 		if (!$attrib) {
 			$output .= $value;
 		}
-		
+
 		# Store the previous stack.
 		@prevStack = @stack;
 	}
@@ -312,6 +321,7 @@ sub parse_params {
 	}
 
 	$self->{".xml"} = $output;
+	$self->{rawParams} = \@rawParams;
 
 	1;
 }
@@ -323,38 +333,34 @@ __END__
 
 CGI::XMLForm - Extension of CGI.pm which reads/generates formated XML.
 
-This is currently alpha software, and I'm looking for feedback. Note though
-that it is proving quite stable in our mod_perl environment, so it is ready for
-production use.
-
 NB: This is a subclass of CGI.pm, so can be used in it's place.
 
 =head1 SYNOPSIS
 
   use CGI::XMLForm;
-  
+
   my $cgi = new CGI::XMLForm;
-  
+
   if ($cgi->param) {
   	print $cgi->header, $cgi->pre($cgi->escapeHTML($cgi->toXML));
   }
   else {
   	open(FILE, "test.xml") or die "Can't open: $!";
 	my @queries = ('/a', '/a/b*', '/a/b/c*', /a/d');
-    print $cgi->header, 
+    print $cgi->header,
 	      $cgi->pre($cgi->escapeHTML(
 		  join "\n", $cgi->readXML(*FILE, @queries)));
   }
 
 =head1 DESCRIPTION
 
-This module can either create form field values from XML based on XQL style
+This module can either create form field values from XML based on XQL/XSL style
 queries (full XQL is _not_ supported - this module is designed for speed), or it
 can create XML from form values. There are 2 key functions: toXML and readXML.
 
 =head2 toXML
 
-The module takes form fields given in a specialised format, 
+The module takes form fields given in a specialised format,
 and outputs them to XML based on that format. The idea is that you
 can create forms that define the resulting XML at the back end.
 
@@ -373,14 +379,13 @@ which creates the following XML:
   </body>
 
 It's the user's responsibility to design appropriate forms to make
-use of this module, although coming later will be a small module that
-uses my XML::DTDParser to create all the form elements given a DTD.
+use of this module. Details of how come below...
 
 Also supported are attribute form items, that allow creation
 of element attributes. The syntax for this is:
 
-  <input name="/body/p[@id="mypara" and @onClick="someFunc()"]/@class">
-  
+  <input name="/body/p[@id='mypara' and @onClick='someFunc()']/@class">
+
 Which creates the following XML:
 
   <body>
@@ -419,7 +424,7 @@ Relative paths start with either ".." or just a tag name.
   "../tr/td"
   "td"
 
-B<Relative paths go at the level above the previous path, unless the previous 
+B<Relative paths go at the level above the previous path, unless the previous
 path was also a relative path, in which case it goes at the same level.> This
 seems confusing at first (you might expect it to always go at the level above
 the previous element), but it makes your form easier to design. Take the

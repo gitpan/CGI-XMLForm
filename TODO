@@ -1,8 +1,6 @@
-- [X] Complete ToCGI (high)
-- [X] Allow multiple valued parameters (high)
-- DTD to Form script (high)
-- Better error checking of CGI params (med)
-- [o] Better documentation (low)
+TODO
 
-[X] marks done (woohoo!)
-[o] marks started
+- Add in support for Doctype headers
+- Add in xmlcgi:combine (for combining 2 or more params into 1 element)
+- Add in more pragmas
+- Figure out how to figure out the encoding... :)
