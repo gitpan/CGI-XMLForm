@@ -1,6 +1,12 @@
 Revision history for Perl extension CGI::ToXML.
 
-0.06  Xxx Jan XX 1999
+0.07  Wed Jan 27 1999
+	- Speed improvements. Now faster than XML::XQL (DOM) for all cases
+	- Some minor bug fixes
+	- Fixes to Stream mode - see README - needs to patch XML::Parser version
+	2.19
+
+0.06  Fri Jan 22 1999
 	- "Pretty" XML fixed.
 	- Removed ToCGI - that was a dumb name!
 	- Fixed - the module was actually totally broken, except

@@ -14,7 +14,7 @@ use XML::Parser;
 @EXPORT = qw(
 	
 );
-$VERSION = '0.06';
+$VERSION = '0.07';
 
 sub new {
 	my $proto = shift;
@@ -63,27 +63,25 @@ sub StartTag {
 	my $expat = shift;
 	return $expat->finish() if $expat->{_done};
 	my $element = shift;
-	my %attribs = %_;
+#	my %attribs = %_;
 
 #warn "Start: $element\n";
-	$expat->{_currenttree}->Append($element, %attribs);
+	$expat->{_currenttree}->Append($element, %_);
+	my $current = $expat->{_currenttree};
 
 #warn "Path now: ", $expat->{_currenttree}->Path, "\n";
 
-	my @Requests = @{$expat->{_requests}};
-
-	foreach (0..$#Requests) {
-		if ($Requests[$_]->Attrib) {
+	foreach (0..$#{$expat->{_requests}}) {
+		next unless defined $expat->{_requests}->[$_]->Attrib;
+# warn "Looking for attrib: ", $expat->{_requests}->[$_]->Attrib, "\n";
+		if (defined $_{$expat->{_requests}->[$_]->Attrib}) {
 			# Looking for attrib
-			if ($Requests[$_]->isEqual($expat->{_currenttree})) {
+			if ($expat->{_requests}->[$_]->isEqual($current)) {
 				# We have equality!
-				if (defined $attribs{$Requests[$_]->Attrib}) {
-					# And we have the attrib!
-					found($expat, $Requests[$_], $attribs{$Requests[$_]->Attrib});
-					splice(@Requests, $_, 1) unless $Requests[$_]->isRepeat;
-					$expat->{_done} = 1 if (@Requests == 0);
-					return;
-				}
+				found($expat, $expat->{_requests}->[$_], $_{$expat->{_requests}->[$_]->Attrib});
+				splice(@{$expat->{_requests}}, $_, 1) unless $expat->{_requests}->[$_]->isRepeat;
+				$expat->{_done} = 1 if (@{$expat->{_requests}} == 0);
+				return;
 			}
 		}
 	}
@@ -104,15 +102,15 @@ sub Text {
 	return $expat->finish() if $expat->{_done};
 
 	my @Requests = @{$expat->{_requests}};
+	my $current = $expat->{_currenttree};
 
 	foreach (0..$#Requests) {
 		if (!$Requests[$_]->Attrib) {
 			# Not looking for an attrib
-#			warn "Comparing : ", $Requests[$_]->Path, " : ",
-			$expat->{_currenttree}->Path, "\n";
-			if ($Requests[$_]->isEqual($expat->{_currenttree})) {
+#			warn "Comparing : ", $Requests[$_]->Path, " : ", $expat->{_currenttree}->Path, "\n";
+			if ($Requests[$_]->isEqual($current)) {
 				found($expat, $Requests[$_], $text);
-				splice(@Requests, $_, 1) unless $Requests[$_]->isRepeat;
+				splice(@{$expat->{_requests}}, $_, 1) unless $Requests[$_]->isRepeat;
 				$expat->{_done} = 1 if (@Requests == 0);
 				return;
 			}
@@ -229,7 +227,7 @@ sub parse_params {
 		# Here we make the attribute into an internal attrib
 		# so that tree compares work properly
 		my $attrib = 0;
-		if($param =~ s/\/(\@\w+)$/\[$1=\"$value\"\]/) {
+		if($param =~ s/(\])?\/(\@\w+)$/(($1 && " and ")||"[").qq($2="$value"])/e) {
 			$attrib = 1;
 		}
 
@@ -347,12 +345,12 @@ NB: This is a subclass of CGI.pm, so can be used in it's place.
 	      $cgi->pre($cgi->escapeHTML(
 		  join "\n", $cgi->readXML(*FILE, @queries)));
   }
-  
+
 =head1 DESCRIPTION
 
 This module can either create form field values from XML based on XQL style
 queries (full XQL is _not_ supported - this module is designed for speed), or it
-can create XML from form values. There are 2 key functions: writeXML and readXML.
+can create XML from form values. There are 2 key functions: toXML and readXML.
 
 =head2 toXML
 
