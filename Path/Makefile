@@ -1,7 +1,7 @@
 # This Makefile is for the CGI::XMLForm::Path extension to perl.
 #
 # It was generated automatically by MakeMaker version
-# 5.4301 (Revision: 1.222) from the contents of
+# 5.42 (Revision: 1.216) from the contents of
 # Makefile.PL. Don't edit this file, edit Makefile.PL instead.
 #
 #	ANY CHANGES MADE HERE WILL BE LOST!
@@ -16,26 +16,24 @@
 
 # --- MakeMaker const_config section:
 
-# These definitions are from config.sh (via C:\Perl\lib/Config.pm)
+# These definitions are from config.sh (via /usr/lib/perl5/i386-linux/5.00404/Config.pm)
 
 # They may have been overridden via Makefile.PL or on the command line
-AR = lib
-CC = cl.exe
-CCCDLFLAGS =  
-CCDLFLAGS =  
-DLEXT = dll
-DLSRC = dl_win32.xs
-LD = link
-LDDLFLAGS = -dll -nologo -nodefaultlib -release -machine:x86
-LDFLAGS = -nologo -nodefaultlib -release -machine:x86
-LIBC = C:\Perl\lib\core\PerlCRT.lib
-LIB_EXT = .lib
-OBJ_EXT = .obj
-OSNAME = MSWin32
-OSVERS = 4.0
-RANLIB = rem
-SO = dll
-EXE_EXT = .exe
+AR = ar
+CC = cc
+CCCDLFLAGS = -fpic
+CCDLFLAGS = -rdynamic
+DLEXT = so
+DLSRC = dl_dlopen.xs
+LD = cc
+LDDLFLAGS = -shared -L/usr/local/lib
+LDFLAGS =  -L/usr/local/lib
+LIBC = 
+LIB_EXT = .a
+OBJ_EXT = .o
+RANLIB = :
+SO = so
+EXE_EXT = 
 
 
 # --- MakeMaker constants section:
@@ -46,47 +44,47 @@ NAME_SYM = CGI_XMLForm_Path
 VERSION = 0.01
 VERSION_SYM = 0_01
 XS_VERSION = 0.01
-INST_BIN = ..\blib\bin
-INST_EXE = ..\blib\script
-INST_LIB = ..\blib\lib
-INST_ARCHLIB = ..\blib\arch
-INST_SCRIPT = ..\blib\script
-PREFIX = C:\Perl
+INST_BIN = .././blib/bin
+INST_EXE = .././blib/script
+INST_LIB = .././blib/lib
+INST_ARCHLIB = .././blib/arch
+INST_SCRIPT = .././blib/script
+PREFIX = /usr
 INSTALLDIRS = site
-INSTALLPRIVLIB = C:\Perl\lib
-INSTALLARCHLIB = C:\Perl\lib
-INSTALLSITELIB = C:\Perl\site\lib
-INSTALLSITEARCH = C:\Perl\site\lib
-INSTALLBIN = $(PREFIX)\bin
-INSTALLSCRIPT = $(PREFIX)\bin
-PERL_LIB = C:\Perl\lib
-PERL_ARCHLIB = C:\Perl\lib
-SITELIBEXP = C:\Perl\site\lib
-SITEARCHEXP = C:\Perl\site\lib
-LIBPERL_A = libperl.lib
+INSTALLPRIVLIB = $(PREFIX)/lib/perl5
+INSTALLARCHLIB = $(PREFIX)/lib/perl5/i386-linux/5.00404
+INSTALLSITELIB = $(PREFIX)/lib/perl5/site_perl
+INSTALLSITEARCH = $(PREFIX)/lib/perl5/site_perl/i386-linux
+INSTALLBIN = $(PREFIX)/bin
+INSTALLSCRIPT = $(PREFIX)/bin
+PERL_LIB = /usr/lib/perl5
+PERL_ARCHLIB = /usr/lib/perl5/i386-linux/5.00404
+SITELIBEXP = /usr/lib/perl5/site_perl
+SITEARCHEXP = /usr/lib/perl5/site_perl/i386-linux
+LIBPERL_A = libperl.a
 FIRST_MAKEFILE = Makefile
 MAKE_APERL_FILE = Makefile.aperl
 PERLMAINCC = $(CC)
-PERL_INC = C:\Perl\lib\CORE
-PERL = C:\Perl\bin\perl.exe
-FULLPERL = C:\Perl\bin\perl.exe
+PERL_INC = /usr/lib/perl5/i386-linux/5.00404/CORE
+PERL = /usr/bin/perl
+FULLPERL = /usr/bin/perl
 
 VERSION_MACRO = VERSION
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 
-MAKEMAKER = 
-MM_VERSION = 5.4301
+MAKEMAKER = /usr/lib/perl5/ExtUtils/MakeMaker.pm
+MM_VERSION = 5.42
 
 # FULLEXT = Pathname for extension directory (eg Foo/Bar/Oracle).
 # BASEEXT = Basename part of FULLEXT. May be just equal FULLEXT. (eg Oracle)
 # ROOTEXT = Directory part of FULLEXT with leading slash (eg /DBD)  !!! Deprecated from MM 5.32  !!!
 # PARENT_NAME = NAME without BASEEXT and no trailing :: (eg Foo::Bar)
 # DLBASE  = Basename part of dynamic library. May be just equal BASEEXT.
-FULLEXT = CGI\XMLForm\Path
+FULLEXT = CGI/XMLForm/Path
 BASEEXT = Path
-PARENT_NAME = CGI::XMLForm
+PARENT_NAME = CGI::XMLForm::
 DLBASE = $(BASEEXT)
 VERSION_FROM = Path.pm
 OBJECT = 
@@ -100,11 +98,11 @@ O_FILES =
 H_FILES = 
 MAN1PODS = 
 MAN3PODS = 
-INST_MAN1DIR = ..\blib\man1
-INSTALLMAN1DIR = C:\Perl\man\man1
+INST_MAN1DIR = .././blib/man1
+INSTALLMAN1DIR = /usr/man/man1
 MAN1EXT = 1
-INST_MAN3DIR = ..\blib\man3
-INSTALLMAN3DIR = C:\Perl\man\man3
+INST_MAN3DIR = .././blib/man3
+INSTALLMAN3DIR = $(PREFIX)/lib/perl5/man/man3
 MAN3EXT = 3
 
 # work around a famous dec-osf make(1) feature(?):
@@ -121,33 +119,33 @@ makemakerdflt: all
 .PHONY: all config static dynamic test linkext manifest
 
 # Where is the Config information that we are using/depend on
-CONFIGDEP = $(PERL_ARCHLIB)\Config.pm $(PERL_INC)\config.h
+CONFIGDEP = $(PERL_ARCHLIB)/Config.pm $(PERL_INC)/config.h
 
 # Where to put things:
-INST_LIBDIR      = $(INST_LIB)\CGI\XMLForm
-INST_ARCHLIBDIR  = $(INST_ARCHLIB)\CGI\XMLForm
+INST_LIBDIR      = $(INST_LIB)/CGI/XMLForm
+INST_ARCHLIBDIR  = $(INST_ARCHLIB)/CGI/XMLForm
 
-INST_AUTODIR     = $(INST_LIB)\auto\$(FULLEXT)
-INST_ARCHAUTODIR = $(INST_ARCHLIB)\auto\$(FULLEXT)
+INST_AUTODIR     = $(INST_LIB)/auto/$(FULLEXT)
+INST_ARCHAUTODIR = $(INST_ARCHLIB)/auto/$(FULLEXT)
 
 INST_STATIC  =
 INST_DYNAMIC =
 INST_BOOT    =
 
-EXPORT_LIST = Path.def
+EXPORT_LIST = 
 
-PERL_ARCHIVE = $(PERL_INC)\perlcore.lib
+PERL_ARCHIVE = 
 
 TO_INST_PM = Path.pm
 
 PM_TO_BLIB = Path.pm \
-	$(INST_LIBDIR)\Path.pm
+	$(INST_LIBDIR)/Path.pm
 
 
 # --- MakeMaker tool_autosplit section:
 
 # Usage: $(AUTOSPLITFILE) FileToSplit AutoDirToSplitInto
-AUTOSPLITFILE = $(PERL) "-I$(PERL_ARCHLIB)" "-I$(PERL_LIB)" -MAutoSplit  -e "autosplit($$ARGV[0], $$ARGV[1], 0, 1, 1);"
+AUTOSPLITFILE = $(PERL) "-I$(PERL_ARCHLIB)" "-I$(PERL_LIB)" -e 'use AutoSplit;autosplit($$ARGV[0], $$ARGV[1], 0, 1, 1) ;'
 
 
 # --- MakeMaker tool_xsubpp section:
@@ -155,18 +153,18 @@ AUTOSPLITFILE = $(PERL) "-I$(PERL_ARCHLIB)" "-I$(PERL_LIB)" -MAutoSplit  -e "aut
 
 # --- MakeMaker tools_other section:
 
-SHELL = cmd /x /c
-CHMOD = $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e chmod
-CP = $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e cp
-LD = link
-MV = $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e mv
-NOOP = rem
-RM_F = $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e rm_f
-RM_RF = $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e rm_rf
-TEST_F = $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e test_f
-TOUCH = $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e touch
+SHELL = /bin/sh
+CHMOD = chmod
+CP = cp
+LD = cc
+MV = mv
+NOOP = $(SHELL) -c true
+RM_F = rm -f
+RM_RF = rm -rf
+TEST_F = test -f
+TOUCH = touch
 UMASK_NULL = umask 0
-DEV_NULL = > NUL
+DEV_NULL = > /dev/null 2>&1
 
 # The following is a portable way to say mkdir -p
 # To see which directories are created, change the if 0 to if 1
@@ -200,7 +198,13 @@ EQUALIZE_TIMESTAMP = $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command
 
 
 # --- MakeMaker pasthru section:
-PASTHRU = -nologo
+
+PASTHRU = LIB="$(LIB)"\
+	LIBPERL_A="$(LIBPERL_A)"\
+	LINKTYPE="$(LINKTYPE)"\
+	PREFIX="$(PREFIX)"\
+	OPTIMIZE="$(OPTIMIZE)"
+
 
 # --- MakeMaker c_o section:
 
@@ -224,32 +228,32 @@ pure_all :: config pm_to_blib subdirs linkext
 subdirs :: $(MYEXTLIB)
 	@$(NOOP)
 
-config :: Makefile $(INST_LIBDIR)\.exists
+config :: Makefile $(INST_LIBDIR)/.exists
 	@$(NOOP)
 
-config :: $(INST_ARCHAUTODIR)\.exists
+config :: $(INST_ARCHAUTODIR)/.exists
 	@$(NOOP)
 
-config :: $(INST_AUTODIR)\.exists
+config :: $(INST_AUTODIR)/.exists
 	@$(NOOP)
 
-$(INST_AUTODIR)\.exists :: C:\Perl\lib\CORE\perl.h
+$(INST_AUTODIR)/.exists :: /usr/lib/perl5/i386-linux/5.00404/CORE/perl.h
 	@$(MKPATH) $(INST_AUTODIR)
-	@$(EQUALIZE_TIMESTAMP) C:\Perl\lib\CORE\perl.h $(INST_AUTODIR)\.exists
+	@$(EQUALIZE_TIMESTAMP) /usr/lib/perl5/i386-linux/5.00404/CORE/perl.h $(INST_AUTODIR)/.exists
 
-	-@$(CHMOD) $(PERM_RWX) $(INST_AUTODIR)
+	-@$(CHMOD) 755 $(INST_AUTODIR)
 
-$(INST_LIBDIR)\.exists :: C:\Perl\lib\CORE\perl.h
+$(INST_LIBDIR)/.exists :: /usr/lib/perl5/i386-linux/5.00404/CORE/perl.h
 	@$(MKPATH) $(INST_LIBDIR)
-	@$(EQUALIZE_TIMESTAMP) C:\Perl\lib\CORE\perl.h $(INST_LIBDIR)\.exists
+	@$(EQUALIZE_TIMESTAMP) /usr/lib/perl5/i386-linux/5.00404/CORE/perl.h $(INST_LIBDIR)/.exists
 
-	-@$(CHMOD) $(PERM_RWX) $(INST_LIBDIR)
+	-@$(CHMOD) 755 $(INST_LIBDIR)
 
-$(INST_ARCHAUTODIR)\.exists :: C:\Perl\lib\CORE\perl.h
+$(INST_ARCHAUTODIR)/.exists :: /usr/lib/perl5/i386-linux/5.00404/CORE/perl.h
 	@$(MKPATH) $(INST_ARCHAUTODIR)
-	@$(EQUALIZE_TIMESTAMP) C:\Perl\lib\CORE\perl.h $(INST_ARCHAUTODIR)\.exists
+	@$(EQUALIZE_TIMESTAMP) /usr/lib/perl5/i386-linux/5.00404/CORE/perl.h $(INST_ARCHAUTODIR)/.exists
 
-	-@$(CHMOD) $(PERM_RWX) $(INST_ARCHAUTODIR)
+	-@$(CHMOD) 755 $(INST_ARCHAUTODIR)
 
 help:
 	perldoc ExtUtils::MakeMaker
@@ -267,10 +271,6 @@ linkext :: $(LINKTYPE)
 
 
 # --- MakeMaker dlsyms section:
-
-Path.def: Makefile.PL
-	$(PERL) "-I$(PERL_ARCHLIB)" "-I$(PERL_LIB)" -MExtUtils::Mksymlists \
-     -e "Mksymlists('NAME' => 'CGI::XMLForm::Path', 'DLBASE' => '$(BASEEXT)', 'DL_FUNCS' => {  }, 'IMPORTS' => {  }, 'DL_VARS' => []);"
 
 
 # --- MakeMaker dynamic section:
@@ -324,17 +324,17 @@ manifypods :
 # the Makefile here so a later make realclean still has a makefile to use.
 
 clean ::
-	-$(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e rm_rf ./blib $(MAKE_APERL_FILE) $(INST_ARCHAUTODIR)/extralibs.all perlmain.c mon.out core so_locations pm_to_blib *~ */*~ */*/*~ *$(OBJ_EXT) *$(LIB_EXT) perl.exe $(BOOTSTRAP) $(BASEEXT).bso $(BASEEXT).def $(BASEEXT).exp
-	-$(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e mv Makefile Makefile.old $(DEV_NULL)
+	-rm -rf ./blib $(MAKE_APERL_FILE) $(INST_ARCHAUTODIR)/extralibs.all perlmain.c mon.out core so_locations pm_to_blib *~ */*~ */*/*~ *$(OBJ_EXT) *$(LIB_EXT) perl.exe $(BOOTSTRAP) $(BASEEXT).bso $(BASEEXT).def $(BASEEXT).exp
+	-mv Makefile Makefile.old $(DEV_NULL)
 
 
 # --- MakeMaker realclean section:
 
 # Delete temporary files (via clean) and also delete installed files
 realclean purge ::  clean
-	$(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e rm_rf $(INST_AUTODIR) $(INST_ARCHAUTODIR)
-	$(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e rm_f $(INST_LIBDIR)\Path.pm
-	$(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e rm_rf Makefile Makefile.old
+	rm -rf $(INST_AUTODIR) $(INST_ARCHAUTODIR)
+	rm -f $(INST_LIBDIR)/Path.pm
+	rm -rf Makefile Makefile.old
 
 
 # --- MakeMaker dist_basics section skipped.
@@ -365,7 +365,6 @@ FORCE:
 Makefile : Makefile.PL $(CONFIGDEP)
 	@echo "Makefile out-of-date with respect to $?"
 	@echo "Cleaning current config before rebuilding Makefile..."
-	-@$(RM_F) Makefile.old
 	-@$(MV) Makefile Makefile.old
 	-$(MAKE) -f Makefile.old clean $(DEV_NULL) || $(NOOP)
 	$(PERL) "-I$(PERL_ARCHLIB)" "-I$(PERL_LIB)" Makefile.PL 
@@ -382,8 +381,8 @@ Makefile : Makefile.PL $(CONFIGDEP)
 # --- MakeMaker staticmake section:
 
 # --- MakeMaker makeaperl section ---
-MAP_TARGET    = ..\perl
-FULLPERL      = C:\Perl\bin\perl.exe
+MAP_TARGET    = ../perl
+FULLPERL      = /usr/bin/perl
 
 
 # --- MakeMaker test section:
@@ -399,10 +398,10 @@ testdb :: testdb_$(LINKTYPE)
 test :: $(TEST_TYPE)
 
 test_dynamic :: pure_all
-	$(FULLPERL) -I$(INST_ARCHLIB) -I$(INST_LIB) -I$(PERL_ARCHLIB) -I$(PERL_LIB) $(TEST_FILE)
+	PERL_DL_NONLAZY=1 $(FULLPERL) -I$(INST_ARCHLIB) -I$(INST_LIB) -I$(PERL_ARCHLIB) -I$(PERL_LIB) $(TEST_FILE)
 
 testdb_dynamic :: pure_all
-	$(FULLPERL) $(TESTDB_SW) -I$(INST_ARCHLIB) -I$(INST_LIB) -I$(PERL_ARCHLIB) -I$(PERL_LIB) $(TEST_FILE)
+	PERL_DL_NONLAZY=1 $(FULLPERL) $(TESTDB_SW) -I$(INST_ARCHLIB) -I$(INST_LIB) -I$(PERL_ARCHLIB) -I$(PERL_LIB) $(TEST_FILE)
 
 test_ : test_dynamic
 
@@ -410,20 +409,12 @@ test_static :: test_dynamic
 testdb_static :: testdb_dynamic
 
 
-# --- MakeMaker ppd section:
-# Creates a PPD (Perl Package Description) for a binary distribution.
-ppd:
-	@$(PERL) -e "print qq{<SOFTPKG NAME=\"CGI-XMLForm-Path\" VERSION=\"0,01,0,0\">\n}. qq{\t<TITLE>CGI-XMLForm-Path</TITLE>\n}. qq{\t<ABSTRACT></ABSTRACT>\n}. qq{\t<AUTHOR></AUTHOR>\n}. qq{\t<IMPLEMENTATION>\n}. qq{\t\t<OS NAME=\"$(OSNAME)\" />\n}. qq{\t\t<ARCHITECTURE NAME=\"MSWin32-x86-object\" />\n}. qq{\t\t<CODEBASE HREF=\"\" />\n}. qq{\t</IMPLEMENTATION>\n}. qq{</SOFTPKG>\n}" > CGI-XMLForm-Path.ppd
-
 # --- MakeMaker pm_to_blib section:
 
 pm_to_blib: $(TO_INST_PM)
 	@$(PERL) "-I$(INST_ARCHLIB)" "-I$(INST_LIB)" \
 	"-I$(PERL_ARCHLIB)" "-I$(PERL_LIB)" -MExtUtils::Install \
-        -e "pm_to_blib(qw[ <<pmfiles.dat ],'$(INST_LIB)\auto')"
-	
-$(PM_TO_BLIB)
-<<
+        -e "pm_to_blib({qw{$(PM_TO_BLIB)}},'$(INST_LIB)/auto')"
 	@$(TOUCH) $@
 
 

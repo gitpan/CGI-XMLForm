@@ -14,7 +14,7 @@ use XML::Parser;
 @EXPORT = qw(
 
 );
-$VERSION = '0.09';
+$VERSION = '0.10';
 
 sub new {
 	my $proto = shift;
